@@ -13,21 +13,20 @@ def fetch_pokemon_data(pokemon_name):
     response = requests.get(api_url)
     json_data = response.text
 
-    pokemon = json.loads(json_data)
-    print(f"{pokemon["abilities"]}")
+    pokemon_data = json.loads(json_data)
+    return pokemon_data
 
-def calculate_average_weight(pokemon_list):
-    api_url = 'https://pokeapi.co/api/v2/pokemon/'
-    response = requests.get(api_url)
-    json_data = response.text
+def calculate_average_weight(pokemon_names):
+    weights = []
+    for pokemon_name in pokemon_names:
+        pokemon_data = fetch_pokemon_data(pokemon_name)
+        weights.append(pokemon_data["weight"])
+    weight_average = sum(weights) / len(weights)
+    return weight_average
+   
 
-    pokemon = json.loads(json_data)
-    average = (pokemon["weight"] / 3)
-    print(average)
 
+pokemon_data = fetch_pokemon_data("pikachu")
+print(pokemon_data["abilities"])
 
-fetch_pokemon_data("pikachu")
-fetch_pokemon_data("bulbasaur")
-fetch_pokemon_data("charmander")
-
-calculate_average_weight(pokemon_names)
+print(calculate_average_weight(pokemon_names))

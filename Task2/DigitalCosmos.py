@@ -24,28 +24,21 @@ def fetch_planets():
     url = "https://api.le-systeme-solaire.net/rest/bodies/"
     response = requests.get(url)
     planets = response.json()['bodies']
+    return planets
+  
 
-    for planet in planets:
-        if planet ['isPlanet']:
-            name = planet['englishName']
-            #mass = planet['mass'] 
-            data = name.split()
-            print(data)
-        
-fetch_planets()
 
 def find_heaviest_planet(planets):
-    url = "https://api.le-systeme-solaire.net/rest/bodies/"
-    response = requests.get(url)
-    planets = response.json()['bodies']
-
+    planets_mass = []
     for planet in planets:
         if planet ['isPlanet']:
             name = planet['englishName']
-            mass = 'massValue:',planet['mass']['massValue']
+            mass_value = planet['mass']['massValue']
+            planets_mass.append({"name": name, "mass_value": mass_value})
     
-    #highest_mass = max(mass)
-    print(f"The heaviest planet is {name} with a mass of {mass} kg.")
+    heaviest_planet = max(planets_mass, key=lambda planet: planet["mass_value"])
+    return heaviest_planet
 
 planets = fetch_planets()
-find_heaviest_planet(planets)
+heaviest_planet = find_heaviest_planet(planets)
+print(f"The heaviest planet is {heaviest_planet["name"]} with a mass of {heaviest_planet["mass_value"]} kg.")
